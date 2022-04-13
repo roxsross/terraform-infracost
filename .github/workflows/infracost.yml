@@ -1,4 +1,4 @@
-on: [pull_request]
+on: [push]
 jobs:
   infracost:
     runs-on: your runner 
