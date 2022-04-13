@@ -8,13 +8,18 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
+      - name: Install terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false 
+
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
           
       - name: Generate Infracost JSON
-        run: infracost breakdown --config-file=infracost.yml --format=json --out-file=/tmp/infracost.json
+        run: infracost breakdown --path=aws-example --format=json --out-file=/tmp/infracost.json
         
       - name: Post Infracost comment
         uses: infracost/actions/comment@v1
