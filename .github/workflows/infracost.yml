@@ -1,33 +1,12 @@
 on: [push]
 jobs:
   infracost:
-    runs-on: your runner 
-    env:
-      working-directory: PATH/TO/TERRAFORM/CODE # Update this!
+    runs-on: ubuntu-latest
 
     name: Run Infracost
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-        
-      - name: Install terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_wrapper: false # This is recommended so the `terraform show` command outputs valid JSON
-
-      # IMPORTANT: add any required steps here to set up cloud credentials so Terraform can run
-
-      - name: Terraform init
-        run: terraform init
-        working-directory: ${{ env.working-directory }}
-
-      - name: Terraform plan
-        run: terraform plan -out tfplan.binary
-        working-directory: ${{ env.working-directory }}
-
-      - name: Terraform show
-        run: terraform show -json tfplan.binary > plan.json
-        working-directory: ${{ env.working-directory }}
 
       - name: Setup Infracost
         uses: infracost/actions/setup@v1
@@ -36,7 +15,6 @@ jobs:
           
       - name: Generate Infracost JSON
         run: infracost breakdown --path plan.json --format json --out-file /tmp/infracost.json
-        working-directory: ${{ env.working-directory }}
         
       - name: Post Infracost comment
         uses: infracost/actions/comment@v1
