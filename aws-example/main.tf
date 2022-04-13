@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_instance" "web_app" {
   ami           = "ami-05badaaaee806728e"
-  instance_type = "m5.8xlarge"              # <<<<< Try changing this to m5.8xlarge to compare the costs
+  instance_type = "t2.micro"              # <<<<< Try changing this to m5.8xlarge to compare the costs
 
   root_block_device {
     volume_size = 20
